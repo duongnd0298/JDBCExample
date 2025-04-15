@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 public class Student {
     private int id;
@@ -10,6 +10,11 @@ public class Student {
 
     public Student(int id, String name, int age, String email) {
         this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+    public Student(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -47,5 +52,9 @@ public class Student {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public Student orElse(Object o) {
+        return null;
     }
 }

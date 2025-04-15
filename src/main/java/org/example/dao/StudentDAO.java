@@ -1,14 +1,24 @@
-package org.example;
+package org.example.dao;
+
+import org.example.model.Student;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.Student;
 
 
-import static org.example.DatabaseUtil.*;
+import static org.example.util.DatabaseUtil.*;
 
-public class Controller{
+
+
+public class StudentDAO{
+    private final Connection conn;
+
+    public StudentDAO(Connection conn) {
+
+        this.conn = conn;
+    }
+
 
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
@@ -35,7 +45,7 @@ public class Controller{
         }
         return students;
     }
-    public void addStudent(Student s) {
+    public boolean addStudent(Student s) {
         String query = "INSERT INTO students (name, age, email) VALUES (?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)){
@@ -49,8 +59,9 @@ public class Controller{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return false;
     }
-    public void updateStudent(Student s) {
+    public boolean updateStudent(Student s) {
         String query = "UPDATE students SET name = ?, age = ?, email = ? WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)){
@@ -64,6 +75,7 @@ public class Controller{
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return false;
     }
     public boolean deleteStudent(int id) {
         String query = "DELETE FROM students WHERE id = ?";
@@ -108,4 +120,7 @@ public class Controller{
         return student;
     }
 
+    public Connection getConn() {
+        return conn;
     }
+}
