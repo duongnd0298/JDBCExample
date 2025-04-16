@@ -1,43 +1,44 @@
 package org.example.service;
 
-import org.example.dao.StudentDAO;
-import org.example.model.Student;
+import org.example.entity.Student;
+import org.example.repository.StudentRepository;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class StudentService {
-    private final StudentDAO studentDAO;
+    private final StudentRepository studentRepository;
 
-    public StudentService(Connection conn) {
-        this.studentDAO = new StudentDAO(conn);
+    public StudentService() {
+        this.studentRepository = new StudentRepository();
     }
 
-    // Lấy danh sách tất cả sinh viên
+    public void close() {
+        studentRepository.close();
+    }
+
     public List<Student> getAll() {
         try {
-            return studentDAO.getAllStudents();
+            return studentRepository.getAllStudents();
         } catch (Exception e) {
             System.err.println("❌ Error fetching students: " + e.getMessage());
-            return List.of(); // Trả về list rỗng nếu lỗi
+            return List.of();
         }
     }
 
-    // Thêm sinh viên mới
     public void create(Student student) {
         try {
-            studentDAO.addStudent(student);
+            studentRepository.addStudent(student);
             System.out.println("✅ Student added successfully.");
         } catch (Exception e) {
             System.err.println("❌ Error adding student: " + e.getMessage());
         }
     }
 
-    // Cập nhật sinh viên
     public void update(Student student) {
         try {
-            boolean result = studentDAO.updateStudent(student);
-            if (result) {
+            Student existing = studentRepository.findById(student.getId());
+            if (existing != null) {
+                studentRepository.updateStudent(student);
                 System.out.println("✅ Student updated successfully.");
             } else {
                 System.out.println("⚠️ Student not found.");
@@ -47,24 +48,18 @@ public class StudentService {
         }
     }
 
-    // Xóa sinh viên theo ID
     public void delete(int id) {
         try {
-            boolean result = studentDAO.deleteStudent(id);
-            if (result) {
-                System.out.println("✅ Student deleted successfully.");
-            } else {
-                System.out.println("⚠️ Student not found.");
-            }
+            studentRepository.deleteStudent(id);
+            System.out.println("✅ Student deleted successfully.");
         } catch (Exception e) {
             System.err.println("❌ Error deleting student: " + e.getMessage());
         }
     }
 
-    // Tìm sinh viên theo ID
     public Student findById(int id) {
         try {
-            return studentDAO.findById(id);
+            return studentRepository.findById(id);
         } catch (Exception e) {
             System.err.println("❌ Error finding student: " + e.getMessage());
             return null;

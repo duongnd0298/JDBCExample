@@ -1,6 +1,6 @@
 package org.example.dao;
 
-import org.example.model.Student;
+import org.example.entity.Student;
 
 import java.sql.*;
 import java.util.ArrayList;

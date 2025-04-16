@@ -1,7 +1,6 @@
 package org.example.dao;
 
-import org.example.dao.StudentDAO;
-import org.example.model.Student;
+import org.example.entity.Student;
 import org.example.util.DatabaseUtil;
 import org.junit.jupiter.api.*;
 
