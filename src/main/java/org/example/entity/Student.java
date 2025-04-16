@@ -8,7 +8,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
-    private int id;
+    private Integer id;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -28,7 +28,7 @@ public class Student {
         this.email = email;
     }
 
-    public Student(int id, String name, int age, String email) {
+    public Student(Integer id, String name, int age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -36,9 +36,14 @@ public class Student {
     }
 
     // Getters & Setters
-    public int getId() { return id; }
+    // Sửa Getter cho id
+    public Integer getId() { // <<<=== Sửa kiểu trả về thành Integer
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() { return name; }
 

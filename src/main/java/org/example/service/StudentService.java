@@ -1,68 +1,50 @@
 package org.example.service;
 
 import org.example.entity.Student;
-import org.example.repository.StudentRepository;
+// import org.example.dao.StudentDAO; // Xóa import này
+import org.example.repository.StudentRepository; // Thêm import này
 
 import java.util.List;
 
 public class StudentService {
-    private final StudentRepository studentRepository;
 
-    public StudentService() {
-        this.studentRepository = new StudentRepository();
+    // private final StudentDAO studentDAO; // Thay thế dòng này
+    private final StudentRepository studentRepository; // Bằng dòng này
+
+    // Cập nhật constructor
+    public StudentService(StudentRepository studentRepository) { // Thay StudentDAO
+        this.studentRepository = studentRepository; // Thay studentDAO
     }
 
-    public void close() {
-        studentRepository.close();
+    public List<Student> findAllStudents() {
+        // Thay đổi lời gọi phương thức nếu tên khác nhau
+        // return studentDAO.getAllStudents();
+        return studentRepository.queryStudents(); // Hoặc getAllStudents() nếu bạn giữ tên đó
     }
 
-    public List<Student> getAll() {
-        try {
-            return studentRepository.getAllStudents();
-        } catch (Exception e) {
-            System.err.println("❌ Error fetching students: " + e.getMessage());
-            return List.of();
-        }
+    public void createStudent(Student student) {
+        // Thay đổi lời gọi phương thức
+        // studentDAO.addStudent(student);
+        studentRepository.addStudent(student);
     }
 
-    public void create(Student student) {
-        try {
-            studentRepository.addStudent(student);
-            System.out.println("✅ Student added successfully.");
-        } catch (Exception e) {
-            System.err.println("❌ Error adding student: " + e.getMessage());
-        }
+    public void modifyStudent(Student student) {
+        // Thay đổi lời gọi phương thức
+        // studentDAO.updateStudent(student);
+        studentRepository.updateStudent(student);
     }
 
-    public void update(Student student) {
-        try {
-            Student existing = studentRepository.findById(student.getId());
-            if (existing != null) {
-                studentRepository.updateStudent(student);
-                System.out.println("✅ Student updated successfully.");
-            } else {
-                System.out.println("⚠️ Student not found.");
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Error updating student: " + e.getMessage());
-        }
+    public void removeStudent(int id) {
+        // Thay đổi lời gọi phương thức
+        // studentDAO.deleteStudent(id);
+        studentRepository.deleteStudent(id);
     }
 
-    public void delete(int id) {
-        try {
-            studentRepository.deleteStudent(id);
-            System.out.println("✅ Student deleted successfully.");
-        } catch (Exception e) {
-            System.err.println("❌ Error deleting student: " + e.getMessage());
-        }
+    public Student getStudentById(int id) {
+        // Thay đổi lời gọi phương thức
+        // return studentDAO.findById(id);
+        return studentRepository.findById(id);
     }
 
-    public Student findById(int id) {
-        try {
-            return studentRepository.findById(id);
-        } catch (Exception e) {
-            System.err.println("❌ Error finding student: " + e.getMessage());
-            return null;
-        }
-    }
+    // Các phương thức service khác nếu có...
 }
